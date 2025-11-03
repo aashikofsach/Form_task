@@ -3,24 +3,30 @@ import { useState } from 'react'
 function App() {
 
   const [formData , setFormdata] = useState({
-    name : "ritik",
-    email : "rik@gmail.com",
+    name : "",
+    email : "",
     password : "",
-    age : ""
+    age : "",
+    gender : "",
+    country : "",
+    checkbox : false
 
   })
 
   function handleSubmit(e)
   {
     e.preventDefault() ;
-    console.log(formData)
+    console.log("submitted Form data", formData )
 
   }
 
   function handleChange(e)
   {
-    console.log("we trigger the handle chamge ")
-    console.log(e.nativeEvent.data)
+    console.log(e.target.name , e.target.value , e.target.type , e.target.checked)
+
+    const {name , value , type , checked} = e.target ;
+    setFormdata({...formData , [name] : type === "checkbox" ? checked : value})
+
   }
   
 
@@ -53,20 +59,20 @@ function App() {
         <div>
           <label htmlFor="">Gender</label>
           <label htmlFor="">
-            <input type="radio" name='gender' />
-            <input type="radio" name='gender' />
-            <input type="radio" name='gender' />
+         <label>Male</label>   <input type="radio" name='gender' value="male" onChange={(e)=> handleChange(e)}/>
+          <label>Female</label>  <input type="radio" name='gender' value='female' onChange={(e)=> handleChange(e)}/>
+          <label>Other</label>  <input type="radio" name='gender' value='other' onChange={(e)=> handleChange(e)}/>
           </label>
 
         </div>
 
         <div>
           <label htmlFor="">Country</label>
-          <select name="" id="">
-            <option value="">India</option>
-            <option value="">UK</option>
-            <option value="">USA</option>
-            <option value="">Others</option>
+          <select name="country" id="country" value={formData.country} onChange={(e)=> handleChange(e)}>
+            <option value="india">India</option>
+            <option value="uk">UK</option>
+            <option value="usa">USA</option>
+            <option value="others">Others</option>
           </select>
         </div>
 
@@ -77,7 +83,7 @@ function App() {
 
         <div>
           <label htmlFor="">Accept Terms and Conditions</label>
-          <input type="checkbox" />
+          <input type="checkbox" checked={formData.checkbox} name='checkbox' onChange={(e)=> handleChange(e)}/>
         </div>
 
         <button type='submit'>Submit</button>
