@@ -3,7 +3,7 @@ import { useState } from 'react'
 function App() {
 
   const [formData , setFormdata] = useState({
-    name : "",
+    name : "ritik",
     email : "rik@gmail.com",
     password : "",
     age : ""
