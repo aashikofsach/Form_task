@@ -72,7 +72,7 @@ function App() {
 
         <div>
           <label htmlFor="">About yourself</label>
-          <textarea name="" id="" placeholder='Enter About Yourself here ' rows={10} cols={200}></textarea>
+          <textarea name="" id="" placeholder='Enter About Yourself here' rows={10} cols={200}></textarea>
         </div>
 
         <div>
