@@ -9,35 +9,123 @@ function App() {
     age : "",
     gender : "",
     country : "",
+    textarea : "",
     checkbox : false
 
-  })
+  });
+  const [error , setError] = useState("");
+  const [nameError , setNameError] = useState("");
+  const [mailError , setMailError] = useState("");
+  const [passError , setPassError] = useState("");
+  const [radioError, setRadioError] = useState("");
+  const [countryError , setCountryError] = useState("");
+  const [checkBoxError , setCheckBoxError] = useState("")
 
   function handleSubmit(e)
   {
     e.preventDefault() ;
 
-    if(!formData.gender)
+    if(formData.gender.length===0)
     {
-      alert("please select one gender ")
+   setRadioError("please select radio button")
+   return
     }
+    else
+    {
+      setRadioError("")
+    }
+    // setRadioError("")
     if(formData.country.length==0)
     {
-      alert("please select the country")
+      setCountryError("please select the country")
+      return
     }
-    console.log("submitted Form data", formData )
+    else
+    {
+      setCountryError("")
+    }
+   
+
+    if(formData.checkbox===false)
+    {
+      setCheckBoxError("please check all terms and conditions ")
+      return
+
+    }
+    else
+    {
+      setCheckBoxError("")
+    }
+
+     console.log("submitted Form data", formData )
 
   }
 
   function handleChange(e)
   {
-    // console.log(e.target.name , e.target.value , e.target.type , e.target.checked)
+    console.log(e.target.name , e.target.value , e.target.type , e.target.checked)
 
     const {name , value , type , checked} = e.target ;
     console.log(value.length)
    
     setFormdata({...formData , [name] : type === "checkbox" ? checked : value})
 
+  }
+
+  function wordCount(str)
+  {
+    return str.split(/\s+/).length;
+
+  }
+
+  function isValidTextarea(data)
+  {
+    const words = data.split(/\s+/);
+    const characters = data.length;
+
+    if(words < 5)
+      setError("Please enter more than 5 words ")
+
+    if(characters < 20)
+      setError("Please enter more 20 characters ")
+
+  }
+
+  function isvalidName(value)
+  {
+    if(value.length <=3)
+    
+    setNameError("name length must be greater than 3")
+
+    else 
+    {  setNameError("")}
+
+  }
+
+  function isValidEmail(value)
+  {
+    if(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value))
+    {
+      setMailError("");
+
+    }
+    else
+      setMailError("Enter the mail in correct format")
+
+
+
+  }
+
+  function isPasswordValid(value)
+  {
+    if(value.length >6)
+    {
+      setPassError("")
+    }
+    else
+    {
+      setPassError("password must be greater then length 6")
+    }
   }
   
 
@@ -50,19 +138,31 @@ function App() {
           <input type="text" name='name' value={formData.name} minLength={3} required onChange={(e) => {
             let value = e.target.value ;
             if(/^[A-Za-z\s]*$/.test(value) )
-              handleChange(e)
+             {
+              isvalidName(e.target.value)
+               handleChange(e)
+             }
           }}/>
+         {nameError && <p>{nameError}</p>}
         </div>
         <div>
 
           <label htmlFor="">Email Address</label>
-          <input type="email" name='email' value={formData.email} onChange={(e) => handleChange(e)} />
+          <input type="email" name='email' value={formData.email} onChange={(e) =>{
+             handleChange(e)
+             isValidEmail(e.target.value)
+          }} />
+          {mailError &&  <p>{mailError}</p>}
 
         </div>
         <div>
 
           <label htmlFor="">Password</label>
-          <input type="password" name='password' minLength={6} value={formData.password} onChange={(e) => handleChange(e)}/>
+          <input type="password" name='password' minLength={6} value={formData.password} onChange={(e) => {
+            
+            isPasswordValid(e.target.value)
+            handleChange(e)}}/>
+            {passError && <p>{passError}</p>}
         </div>
         <div>
 
@@ -78,7 +178,7 @@ function App() {
           <label> <input type="radio" name='gender' value='female' onChange={(e)=> handleChange(e)}/> Female</label>  
           <label> <input type="radio" name='gender' value='other' onChange={(e)=> handleChange(e)}/> Other</label>  
           </label>
-
+            {radioError && <p>{radioError}</p>}
         </div>
 
         <div>
@@ -90,16 +190,24 @@ function App() {
             <option value="usa">USA</option>
             <option value="others">Others</option>
           </select>
+          {countryError && <p>{countryError}</p>}
         </div>
 
         <div>
           <label htmlFor="">About yourself</label>
-          <textarea name="textarea" id="" placeholder='Enter About Yourself here' required rows={10} cols={200}></textarea>
+          <textarea name="textarea" id="" placeholder='Enter About Yourself here' required rows={10} cols={200} value={formData.textarea} onChange={(e) => {
+            isValidTextarea(e.target.value)
+
+            handleChange(e)
+          }}></textarea>
+          {error && <p>{error}</p>}
+          <p>Word count is : {wordCount(formData.textarea)}</p>
         </div>
 
         <div>
           <label htmlFor="">Accept Terms and Conditions</label>
           <input type="checkbox" checked={formData.checkbox} name='checkbox' onChange={(e)=> handleChange(e)}/>
+          {checkBoxError && <p>{checkBoxError}</p>}
         </div>
 
         <button type='submit'>Submit</button>
