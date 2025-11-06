@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 function App() {
 
+
+  // const formref = useRef()
+  const [submitted , setSubmitted] = useState(false);
 const [disable , setDisable] = useState(false)
   const [formData, setFormdata] = useState({
     name: "",
@@ -55,7 +58,36 @@ const [disable , setDisable] = useState(false)
       setCheckBoxError("")
     }
 
-    console.log("submitted Form data", formData)
+    // console.log("submitted Form data", formData)
+   
+    // setTimeout(()=>
+    // {
+      //  alert("form submitted sucessfully ");
+       
+       
+    // }, 3000)
+    setSubmitted(true)
+
+    setTimeout(()=>{
+      setFormdata({
+    name: "",
+    email: "",
+    password: "",
+    age: "",
+    gender: "",
+    country: "",
+    textarea: "",
+    checkbox: false
+
+  })
+  setSubmitted(false)
+  // formref.current.reset()
+      
+
+    },3000)
+
+
+
 
   }
 
@@ -137,7 +169,7 @@ setDisable(false)
   return (
     <div>
       <h1> Form Task </h1>
-      <form onSubmit={handleSubmit}>
+      <form  onSubmit={handleSubmit}>
         <div>
           <label htmlFor="">Full name</label>
           <input type="text" name='name' required minLength={3} value={formData.name} onChange={(e) => {
@@ -172,16 +204,16 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Age</label>
-          <input type="number" name='age' required onChange={(e) => handleChange(e)} />
+          <input type="number" name='age' required value={formData.age} onChange={(e) => handleChange(e)} />
 
         </div>
 
         <div>
           <label htmlFor="">Gender</label>
           <label htmlFor="">
-            <label>  <input type="radio" name='gender' value="male" onChange={(e) => handleChange(e)} /> Male</label>
-            <label> <input type="radio" name='gender' value='female' onChange={(e) => handleChange(e)} /> Female</label>
-            <label> <input type="radio" name='gender' value='other' onChange={(e) => handleChange(e)} /> Other</label>
+            <label>  <input type="radio" name='gender' value="male" checked={formData.gender=="male"} onChange={(e) => handleChange(e)} /> Male</label>
+            <label> <input type="radio" name='gender' value='female' checked={formData.gender=="female"} onChange={(e) => handleChange(e)} /> Female</label>
+            <label> <input type="radio" name='gender' value='other' checked={formData.gender=="other"} onChange={(e) => handleChange(e)} /> Other</label>
           </label>
           {radioError && <p>{radioError}</p>}
         </div>
@@ -217,6 +249,7 @@ setDisable(false)
 
         <button type='submit' disabled={disable}>Submit</button>
       </form>
+      {submitted && <p>Form Submitted successfully </p>}
     </div>
 
   )
