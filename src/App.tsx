@@ -1,12 +1,26 @@
 import { useRef, useState } from 'react'
 
+type inputEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
+
+interface UserFormData {
+  name: string;
+  email: string;
+  password: string;
+  age?: number;
+  gender: string;
+  country: string;
+  textarea: string;
+  checkbox: boolean;
+}
+
+
 function App() {
 
 
   // const formref = useRef()
-  const [submitted , setSubmitted] = useState(false);
-const [disable , setDisable] = useState(false)
-  const [formData, setFormdata] = useState({
+  const [submitted , setSubmitted] = useState<boolean>(false);
+const [disable , setDisable] = useState<boolean>(false)
+  const [formData, setFormdata] = useState<UserFormData>({
     name: "",
     email: "",
     password: "",
