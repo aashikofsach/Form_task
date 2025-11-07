@@ -24,7 +24,7 @@ const [disable , setDisable] = useState<boolean>(false)
     name: "",
     email: "",
     password: "",
-    age: 0,
+    age: undefined,
     gender: "",
     country: "",
     textarea: "",
@@ -109,10 +109,14 @@ const [disable , setDisable] = useState<boolean>(false)
   function handleChange(e : inputEvent) {
 
     
+
+    
     console.log(e.target.name, e.target.value, e.target.type, e.target.checked)
 
     const { name, value, type, checked } = e.target;
-    console.log(value.length);
+    // console.log(value.length);
+
+    
     if(name === "age")
     {
       setFormdata({ ...formData, [name]:  Number(value) })
