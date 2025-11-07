@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import React, {  useState } from 'react'
 
 type inputEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
 
@@ -24,23 +24,23 @@ const [disable , setDisable] = useState<boolean>(false)
     name: "",
     email: "",
     password: "",
-    age: "",
+    age: 0,
     gender: "",
     country: "",
     textarea: "",
     checkbox: false
 
   });
-  const [error, setError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [mailError, setMailError] = useState("");
-  const [passError, setPassError] = useState("");
-  const [radioError, setRadioError] = useState("");
-  const [countryError, setCountryError] = useState("");
-  const [checkBoxError, setCheckBoxError] = useState("");
+  const [error, setError] = useState<string>("");
+  const [nameError, setNameError] = useState<string>("");
+  const [mailError, setMailError] = useState<string>("");
+  const [passError, setPassError] = useState<string>("");
+  const [radioError, setRadioError] = useState<string>("");
+  const [countryError, setCountryError] = useState<string>("");
+  const [checkBoxError, setCheckBoxError] = useState<string>("");
   // const [form]
 
-  function handleSubmit(e) {
+  function handleSubmit(e : React.FormEvent<HTMLFormElement>) {
    
     e.preventDefault();
     // console.log("trigger")
@@ -81,13 +81,14 @@ const [disable , setDisable] = useState<boolean>(false)
        
     // }, 3000)
     setSubmitted(true)
+    console.log(formData)
 
     setTimeout(()=>{
       setFormdata({
     name: "",
     email: "",
     password: "",
-    age: "",
+    age: 0,
     gender: "",
     country: "",
     textarea: "",
@@ -105,22 +106,33 @@ const [disable , setDisable] = useState<boolean>(false)
 
   }
 
-  function handleChange(e) {
+  function handleChange(e : inputEvent) {
+
+    
     console.log(e.target.name, e.target.value, e.target.type, e.target.checked)
 
     const { name, value, type, checked } = e.target;
-    console.log(value.length)
+    console.log(value.length);
+    if(name === "age")
+    {
+      setFormdata({ ...formData, [name]:  Number(value) })
+
+    }
+    else
+    {
 
     setFormdata({ ...formData, [name]: type === "checkbox" ? checked : value })
+    }
+
 
   }
 
-  function wordCount(str) {
+  function wordCount(str : string) {
     return str.split(/\s+/).length;
 
   }
 
-  function isValidTextarea(e) {
+  function isValidTextarea(e : React.ChangeEvent<HTMLTextAreaElement>) {
 
     let data = e.target.value ;
     const words = data.split(/\s+/).length;
@@ -144,7 +156,7 @@ const [disable , setDisable] = useState<boolean>(false)
 
   }
 
-  function isvalidName(value) {
+  function isvalidName(value: string) {
     if (value.length <= 3)
 {
       setNameError("name length must be greater than 3")
@@ -158,7 +170,7 @@ setDisable(false)
 
   }
 
-  function isValidEmail(value) {
+  function isValidEmail(value : string) {
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
       setMailError("");
 
@@ -170,7 +182,7 @@ setDisable(false)
 
   }
 
-  function isPasswordValid(value) {
+  function isPasswordValid(value : string) {
     if (value.length > 6) {
       setPassError("")
     }
