@@ -45,10 +45,35 @@ const [disable , setDisable] = useState<boolean>(false)
     e.preventDefault();
     // console.log("trigger")
 
+    if(formData.name.length <3)
+    {
+            setNameError("name length must be greater than 3")
+          
+
+
+    }
+
+    if (!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email))) {
+      setMailError("Enter mail in correct format");
+
+    }
+
+    if(formData.password.length <6)
+    {
+      setPassError("password length is not correct")
+    }
+
+    // if(formData.textarea.length)
+    if(formData.textarea.split(/\s+/).length < 5)
+    {
+      // console.log('yeh waala')
+      setError("Please enter more than 5 words ")
+    }
+
     if (formData.gender.length === 0) {
       setRadioError("please select radio button")
       
-      return
+      // return
     }
     else {
       setRadioError("")
@@ -56,7 +81,7 @@ const [disable , setDisable] = useState<boolean>(false)
     // setRadioError("")
     if (formData.country.length == 0) {
       setCountryError("please select the country")
-      return
+      // return
     }
     else {
       setCountryError("")
@@ -65,7 +90,7 @@ const [disable , setDisable] = useState<boolean>(false)
 
     if (formData.checkbox === false) {
       setCheckBoxError("please check all terms and conditions ")
-      return
+      // return
 
     }
     else {
@@ -80,7 +105,11 @@ const [disable , setDisable] = useState<boolean>(false)
        
        
     // }, 3000)
-    setSubmitted(true)
+  if(error === "" && nameError === "" && mailError === ""  && passError === "" && radioError === "" && countryError === "" && checkBoxError === "" )
+  {
+      setSubmitted(true)
+      console.log( 'jai shree ram')
+  }
     console.log(formData)
 
     setTimeout(()=>{
@@ -88,7 +117,7 @@ const [disable , setDisable] = useState<boolean>(false)
     name: "",
     email: "",
     password: "",
-    age: 0,
+    age: undefined,
     gender: "",
     country: "",
     textarea: "",
@@ -97,6 +126,24 @@ const [disable , setDisable] = useState<boolean>(false)
   })
   setSubmitted(false)
   // formref.current.reset()
+  
+  // const [nameError, setNameError] = useState<string>("");
+  // const [mailError, setMailError] = useState<string>("");
+  // const [passError, setPassError] = useState<string>("");
+  // const [radioError, setRadioError] = useState<string>("");
+  // const [countryError, setCountryError] = useState<string>("");
+  // const [checkBoxError, setCheckBoxError] = useState<string>("");
+
+
+  setNameError("");
+  setMailError("");
+  setPassError("");
+  setRadioError("");
+  setCountryError("");
+  setCountryError("");
+  setCheckBoxError("");
+  setError("");
+
       
 
     },3000)
@@ -164,7 +211,7 @@ const [disable , setDisable] = useState<boolean>(false)
     if (value.length <= 3)
 {
       setNameError("name length must be greater than 3")
-      setDisable(true)
+      // setDisable(true)
       return
 }
     else { setNameError("")
@@ -202,7 +249,7 @@ setDisable(false)
       <form  onSubmit={handleSubmit}>
         <div>
           <label htmlFor="">Full name</label>
-          <input type="text" name='name' required minLength={3} value={formData.name} onChange={(e) => {
+          <input type="text" name='name'  value={formData.name} onChange={(e) => {
             let value = e.target.value;
             if (/^[A-Za-z\s]*$/.test(value)) {
               isvalidName(e.target.value)
@@ -214,7 +261,7 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Email Address</label>
-          <input type="email" name='email' required value={formData.email} onChange={(e) => {
+          <input type="email" name='email'  value={formData.email} onChange={(e) => {
             handleChange(e)
             isValidEmail(e.target.value)
           }} />
@@ -224,7 +271,7 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Password</label>
-          <input type="password" name='password' minLength={6} required value={formData.password} onChange={(e) => {
+          <input type="password" name='password'  value={formData.password} onChange={(e) => {
 
             isPasswordValid(e.target.value)
             handleChange(e)
@@ -234,7 +281,7 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Age</label>
-          <input type="number" name='age' required value={formData.age} onChange={(e) => handleChange(e)} />
+          <input type="number" name='age'  value={formData.age} onChange={(e) => handleChange(e)} />
 
         </div>
 
@@ -262,7 +309,7 @@ setDisable(false)
 
         <div>
           <label htmlFor="">About yourself</label>
-          <textarea name="textarea" id="" placeholder='Enter About Yourself here' required rows={10} cols={200} value={formData.textarea} onChange={(e) => {
+          <textarea name="textarea" id="" placeholder='Enter About Yourself here'  rows={10} cols={200} value={formData.textarea} onChange={(e) => {
             isValidTextarea(e)
 
 
