@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 
 type inputEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
 
@@ -13,13 +13,12 @@ interface UserFormData {
   checkbox: boolean;
 }
 
-
 function App() {
 
 
   // const formref = useRef()
-  const [submitted , setSubmitted] = useState<boolean>(false);
-const [disable , setDisable] = useState<boolean>(false)
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [disable, setDisable] = useState<boolean>(false)
   const [formData, setFormdata] = useState<UserFormData>({
     name: "",
     email: "",
@@ -40,152 +39,140 @@ const [disable , setDisable] = useState<boolean>(false)
   const [checkBoxError, setCheckBoxError] = useState<string>("");
   // const [form]
 
-  function handleSubmit(e : React.FormEvent<HTMLFormElement>) {
-   
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+
+    let errorFlag = false;
     e.preventDefault();
-    // console.log("trigger")
+    
 
-    if(formData.name.length <3)
-    {
-            setNameError("name length must be greater than 3")
-          
-
-
+    if (formData.name.length < 3) {
+      setNameError("name length must be greater than 3")
+      errorFlag = true;
     }
 
     if (!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email))) {
       setMailError("Enter mail in correct format");
-
+      errorFlag = true
     }
 
-    if(formData.password.length <6)
-    {
+    if (formData.password.length < 6) {
       setPassError("password length is not correct")
+      errorFlag = true
     }
 
-    // if(formData.textarea.length)
-    if(formData.textarea.split(/\s+/).length < 5)
-    {
-      // console.log('yeh waala')
+   
+    if (formData.textarea.split(/\s+/).length < 5) {
+      
       setError("Please enter more than 5 words ")
+      errorFlag = true
     }
 
     if (formData.gender.length === 0) {
       setRadioError("please select radio button")
-      
-      // return
+      errorFlag = true
+    
     }
-    else {
-      setRadioError("")
-    }
-    // setRadioError("")
+   
+   
     if (formData.country.length == 0) {
       setCountryError("please select the country")
-      // return
+      errorFlag = true
+   
     }
-    else {
-      setCountryError("")
-    }
+  
 
 
     if (formData.checkbox === false) {
       setCheckBoxError("please check all terms and conditions ")
-      // return
-
+      errorFlag = true
     }
-    else {
-      setCheckBoxError("")
+    // else {
+    //   setCheckBoxError("")
+    // }
+
+
+
+
+    if (errorFlag) {
+      console.log(error)
+      setDisable(true)
+      console.log("here we have to return")
+      return
     }
 
-    // console.log("submitted Form data", formData)
-   
-    // setTimeout(()=>
-    // {
-      //  alert("form submitted sucessfully ");
-       
-       
-    // }, 3000)
-  if(error === "" && nameError === "" && mailError === ""  && passError === "" && radioError === "" && countryError === "" && checkBoxError === "" )
-  {
-      setSubmitted(true)
-      console.log( 'jai shree ram')
-  }
+
     console.log(formData)
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setFormdata({
-    name: "",
-    email: "",
-    password: "",
-    age: undefined,
-    gender: "",
-    country: "",
-    textarea: "",
-    checkbox: false
+        name: "",
+        email: "",
+        password: "",
+        age: undefined,
+        gender: "",
+        country: "",
+        textarea: "",
+        checkbox: false
 
-  })
-  setSubmitted(false)
-  // formref.current.reset()
-  
-  // const [nameError, setNameError] = useState<string>("");
-  // const [mailError, setMailError] = useState<string>("");
-  // const [passError, setPassError] = useState<string>("");
-  // const [radioError, setRadioError] = useState<string>("");
-  // const [countryError, setCountryError] = useState<string>("");
-  // const [checkBoxError, setCheckBoxError] = useState<string>("");
-
-
-  setNameError("");
-  setMailError("");
-  setPassError("");
-  setRadioError("");
-  setCountryError("");
-  setCountryError("");
-  setCheckBoxError("");
-  setError("");
-
-      
-
-    },3000)
+      })
+      setSubmitted(false)
+     
+      setNameError("");
+      setMailError("");
+      setPassError("");
+      setRadioError("");
+      setCountryError("");
+      setCountryError("");
+      setCheckBoxError("");
+      setError("");
+    }, 3000)
 
 
 
 
   }
 
-  function handleChange(e : inputEvent) {
+  function handleChange(e: inputEvent) {
 
-    
 
-    
+
+
     console.log(e.target.name, e.target.value, e.target.type, e.target.checked)
 
     const { name, value, type, checked } = e.target;
     // console.log(value.length);
 
-    
-    if(name === "age")
-    {
-      setFormdata({ ...formData, [name]:  Number(value) })
+    // let btnflag = 
 
+    if (name === "gender" && checked) {
+      setRadioError("")
     }
-    else
-    {
-
-    setFormdata({ ...formData, [name]: type === "checkbox" ? checked : value })
+    if (name === "country" && type == "select-one") {
+      setCountryError("")
+    }
+    if (name == "checkbox" && checked) {
+      setCheckBoxError("")
     }
 
+    if (name === "age") {
+      setFormdata({ ...formData, [name]: Number(value) })
+    }
+    else {
 
+      setFormdata({ ...formData, [name]: type === "checkbox" ? checked : value })
+      console.log("here one ")
+    }
   }
 
-  function wordCount(str : string) {
+
+  function wordCount(str: string) {
     return str.split(/\s+/).length;
 
   }
 
-  function isValidTextarea(e : React.ChangeEvent<HTMLTextAreaElement>) {
+  function isValidTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
 
-    let data = e.target.value ;
+    let data = e.target.value;
     const words = data.split(/\s+/).length;
     // const characters = data.length;
 
@@ -197,8 +184,7 @@ const [disable , setDisable] = useState<boolean>(false)
 
 
     }
-    else
-    {
+    else {
       setError("");
       handleChange(e)
     }
@@ -208,20 +194,20 @@ const [disable , setDisable] = useState<boolean>(false)
   }
 
   function isvalidName(value: string) {
-    if (value.length <= 3)
-{
+    if (value.length <= 3) {
       setNameError("name length must be greater than 3")
       // setDisable(true)
       return
-}
-    else { setNameError("")
-setDisable(false)
+    }
+    else {
+      setNameError("")
+      // setDisable(false)
 
-     }
+    }
 
   }
 
-  function isValidEmail(value : string) {
+  function isValidEmail(value: string) {
     if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
       setMailError("");
 
@@ -233,7 +219,7 @@ setDisable(false)
 
   }
 
-  function isPasswordValid(value : string) {
+  function isPasswordValid(value: string) {
     if (value.length > 6) {
       setPassError("")
     }
@@ -246,10 +232,10 @@ setDisable(false)
   return (
     <div>
       <h1> Form Task </h1>
-      <form  onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="">Full name</label>
-          <input type="text" name='name'  value={formData.name} onChange={(e) => {
+          <input type="text" name='name' value={formData.name} onChange={(e) => {
             let value = e.target.value;
             if (/^[A-Za-z\s]*$/.test(value)) {
               isvalidName(e.target.value)
@@ -261,7 +247,7 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Email Address</label>
-          <input type="email" name='email'  value={formData.email} onChange={(e) => {
+          <input type="email" name='email' value={formData.email} onChange={(e) => {
             handleChange(e)
             isValidEmail(e.target.value)
           }} />
@@ -271,7 +257,7 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Password</label>
-          <input type="password" name='password'  value={formData.password} onChange={(e) => {
+          <input type="password" name='password' value={formData.password} onChange={(e) => {
 
             isPasswordValid(e.target.value)
             handleChange(e)
@@ -281,16 +267,16 @@ setDisable(false)
         <div>
 
           <label htmlFor="">Age</label>
-          <input type="number" name='age'  value={formData.age} onChange={(e) => handleChange(e)} />
+          <input type="number" name='age' value={formData.age} onChange={(e) => handleChange(e)} />
 
         </div>
 
         <div>
           <label htmlFor="">Gender</label>
           <label htmlFor="">
-            <label>  <input type="radio" name='gender' value="male" checked={formData.gender=="male"} onChange={(e) => handleChange(e)} /> Male</label>
-            <label> <input type="radio" name='gender' value='female' checked={formData.gender=="female"} onChange={(e) => handleChange(e)} /> Female</label>
-            <label> <input type="radio" name='gender' value='other' checked={formData.gender=="other"} onChange={(e) => handleChange(e)} /> Other</label>
+            <label>  <input type="radio" name='gender' value="male" checked={formData.gender == "male"} onChange={(e) => handleChange(e)} /> Male</label>
+            <label> <input type="radio" name='gender' value='female' checked={formData.gender == "female"} onChange={(e) => handleChange(e)} /> Female</label>
+            <label> <input type="radio" name='gender' value='other' checked={formData.gender == "other"} onChange={(e) => handleChange(e)} /> Other</label>
           </label>
           {radioError && <p>{radioError}</p>}
         </div>
@@ -309,7 +295,7 @@ setDisable(false)
 
         <div>
           <label htmlFor="">About yourself</label>
-          <textarea name="textarea" id="" placeholder='Enter About Yourself here'  rows={10} cols={200} value={formData.textarea} onChange={(e) => {
+          <textarea name="textarea" id="" placeholder='Enter About Yourself here' rows={10} cols={200} value={formData.textarea} onChange={(e) => {
             isValidTextarea(e)
 
 
