@@ -99,9 +99,11 @@ function App() {
       console.log("here we have to return")
       return
     }
-
+    else
+    {
 
     console.log(formData)
+    setSubmitted(true)
 
     setTimeout(() => {
       setFormdata({
@@ -126,6 +128,9 @@ function App() {
       setCheckBoxError("");
       setError("");
     }, 3000)
+
+    }
+
 
 
 
@@ -162,7 +167,30 @@ function App() {
       setFormdata({ ...formData, [name]: type === "checkbox" ? checked : value })
       console.log("here one ")
     }
+
+    // validateForm();
   }
+
+  function validateForm() {
+  // Check if any field has an error
+  const isFormValid =
+    !nameError &&
+    !mailError &&
+    !passError &&
+    !radioError &&
+    !countryError &&
+    !checkBoxError &&
+    formData.name.length >= 3 &&
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email) &&
+    formData.password.length >= 6 &&
+    formData.textarea.split(/\s+/).length >= 5 &&
+    formData.gender &&
+    formData.country &&
+    formData.checkbox;
+
+  // Enable or disable submit button based on validation
+  setDisable(!isFormValid);
+}
 
 
   function wordCount(str: string) {
