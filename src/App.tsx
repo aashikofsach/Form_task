@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type inputEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
 
@@ -37,6 +37,8 @@ function App() {
   const [radioError, setRadioError] = useState<string>("");
   const [countryError, setCountryError] = useState<string>("");
   const [checkBoxError, setCheckBoxError] = useState<string>("");
+
+
   // const [form]
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -138,10 +140,6 @@ function App() {
   }
 
   function handleChange(e: inputEvent) {
-
-
-
-
     console.log(e.target.name, e.target.value, e.target.type, e.target.checked)
 
     const { name, value, type, checked } = e.target;
@@ -156,45 +154,58 @@ function App() {
       setCountryError("")
     }
     if (name == "checkbox" && checked) {
+      console.log("line 159 enering or bot ")
       setCheckBoxError("")
     }
 
-    if (name === "age") {
-      setFormdata({ ...formData, [name]: Number(value) })
-    }
-    else {
+    console.log(radioError , "line numver is 161")
 
-      setFormdata({ ...formData, [name]: type === "checkbox" ? checked : value })
-      console.log("here one ")
-    }
+    console.log(checkBoxError, "line number is 162")
 
-    // validateForm();
+   const nextValue =
+    name === "age" ? Number(value) : (type === "checkbox" ? checked : value);
+
+      const nextFormData = { ...formData, [name]: nextValue };
+
+     setFormdata((prevState) => {
+  const updatedState = { ...prevState, ...nextFormData };
+  console.log(updatedState);  // Log the updated state here
+  return updatedState;
+});
+
+console.log(nextFormData.name.length, "this is line 176")
+console.log(formData.name.length)
+      console.log(formData , "line number 174 ")
+
+    validateForm(nextFormData);
   }
 
-  function validateForm() {
+  function validateForm(nextFormData :UserFormData) {
   // Check if any field has an error
   const isFormValid =
-    !nameError &&
-    !mailError &&
-    !passError &&
-    !radioError &&
-    !countryError &&
-    !checkBoxError &&
-    formData.name.length >= 3 &&
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email) &&
-    formData.password.length >= 6 &&
-    formData.textarea.split(/\s+/).length >= 5 &&
-    formData.gender &&
-    formData.country &&
-    formData.checkbox;
+    // !nameError &&
+    // !mailError &&
+    // !passError &&
+    // !radioError &&
+    // !countryError &&
+    // !checkBoxError &&
+    nextFormData.name.length >= 3 &&
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(nextFormData.email) &&
+    nextFormData.password.length >= 6 &&
+    nextFormData.textarea.split(/\s+/).length >= 5 &&
+    nextFormData.gender &&
+    nextFormData.country &&
+    nextFormData.checkbox;
+
+    console.log(isFormValid, "888888888888")
 
   // Enable or disable submit button based on validation
-  setDisable(!isFormValid);
+    setDisable(!isFormValid);
 }
 
 
   function wordCount(str: string) {
-    return str.split(/\s+/).length;
+    return str.trim().split(/\s+/).length;
 
   }
 
@@ -210,7 +221,6 @@ function App() {
       setError("Please enter more than 5 words ")
       handleChange(e)
 
-
     }
     else {
       setError("");
@@ -225,7 +235,7 @@ function App() {
     if (value.length <= 3) {
       setNameError("name length must be greater than 3")
       // setDisable(true)
-      return
+    
     }
     else {
       setNameError("")
