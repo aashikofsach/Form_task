@@ -6,7 +6,7 @@ interface UserFormData {
   name: string;
   email: string;
   password: string;
-  age?: number;
+  age?:  string;
   gender: string;
   country: string;
   textarea: string;
@@ -23,7 +23,7 @@ function App() {
     name: "",
     email: "",
     password: "",
-    age: undefined,
+    age: "",
     gender: "",
     country: "",
     textarea: "",
@@ -112,7 +112,7 @@ function App() {
         name: "",
         email: "",
         password: "",
-        age: undefined,
+        age: "",
         gender: "",
         country: "",
         textarea: "",
@@ -205,17 +205,18 @@ console.log(formData.name.length)
 
 
   function wordCount(str: string) {
-    return str.trim().split(/\s+/).length;
+    return str.trim().split(/\s+/).filter(Boolean).length;
+
 
   }
 
   function isValidTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
 
     let data = e.target.value;
-    const words = data.split(/\s+/).length;
+    const words = data.trim().split(/\s+/).filter(Boolean).length;
     // const characters = data.length;
 
-    // console.log(words)
+    console.log(words)
 
     if (words < 5) {
       setError("Please enter more than 5 words ")
