@@ -1,35 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-type inputEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>
+import type { UserFormData, inputEvent } from './types';
+import { initialUserFormData } from "./constants/formDefaults"
+import { isValidEmailAdd, isValidFullName } from './utils/regexUtils';
+import { MIN_NAME_LENGTH, MIN_PASSWORD_LENGTH, MIN_TEXT_AREA_LENGTH } from './constants/constValues';
+import { wordCount } from './utils/stringUtils';
 
-interface UserFormData {
-  name: string;
-  email: string;
-  password: string;
-  age?:  string;
-  gender: string;
-  country: string;
-  textarea: string;
-  checkbox: boolean;
-}
 
 function App() {
 
-
-  // const formref = useRef()
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false)
-  const [formData, setFormdata] = useState<UserFormData>({
-    name: "",
-    email: "",
-    password: "",
-    age: "",
-    gender: "",
-    country: "",
-    textarea: "",
-    checkbox: false
-
-  });
+  const [formData, setFormdata] = useState<UserFormData>(initialUserFormData);
   const [error, setError] = useState<string>("");
   const [nameError, setNameError] = useState<string>("");
   const [mailError, setMailError] = useState<string>("");
@@ -39,32 +21,32 @@ function App() {
   const [checkBoxError, setCheckBoxError] = useState<string>("");
 
 
-  // const [form]
+
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
     let errorFlag = false;
     e.preventDefault();
-    
 
-    if (formData.name.length < 3) {
+
+    if (formData.name.length < MIN_NAME_LENGTH) {
       setNameError("name length must be greater than 3")
       errorFlag = true;
     }
 
-    if (!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email))) {
+    if (!(isValidEmailAdd(formData.email))) {
       setMailError("Enter mail in correct format");
       errorFlag = true
     }
 
-    if (formData.password.length < 6) {
+    if (formData.password.length < MIN_PASSWORD_LENGTH) {
       setPassError("password length is not correct")
       errorFlag = true
     }
 
-   
-    if (formData.textarea.split(/\s+/).length < 5) {
-      
+
+    if (formData.textarea.split(/\s+/).length < MIN_TEXT_AREA_LENGTH) {
+
       setError("Please enter more than 5 words ")
       errorFlag = true
     }
@@ -72,64 +54,51 @@ function App() {
     if (formData.gender.length === 0) {
       setRadioError("please select radio button")
       errorFlag = true
-    
+
     }
-   
-   
+
+
     if (formData.country.length == 0) {
       setCountryError("please select the country")
       errorFlag = true
-   
+
     }
-  
+
 
 
     if (formData.checkbox === false) {
       setCheckBoxError("please check all terms and conditions ")
       errorFlag = true
     }
-    // else {
-    //   setCheckBoxError("")
-    // }
+
 
 
 
 
     if (errorFlag) {
-      console.log(error)
+
       setDisable(true)
-      console.log("here we have to return")
+
       return
     }
-    else
-    {
+    else {
 
-    console.log(formData)
-    setSubmitted(true)
 
-    setTimeout(() => {
-      setFormdata({
-        name: "",
-        email: "",
-        password: "",
-        age: "",
-        gender: "",
-        country: "",
-        textarea: "",
-        checkbox: false
+      setSubmitted(true)
 
-      })
-      setSubmitted(false)
-     
-      setNameError("");
-      setMailError("");
-      setPassError("");
-      setRadioError("");
-      setCountryError("");
-      setCountryError("");
-      setCheckBoxError("");
-      setError("");
-    }, 3000)
+      setTimeout(() => {
+        setFormdata(initialUserFormData)
+        setSubmitted(false)
+
+        setNameError("");
+        setMailError("");
+        setPassError("");
+        setRadioError("");
+        setCountryError("");
+        setCountryError("");
+        setCheckBoxError("");
+        setError("");
+      }, 3000)
 
     }
 
@@ -140,12 +109,9 @@ function App() {
   }
 
   function handleChange(e: inputEvent) {
-    console.log(e.target.name, e.target.value, e.target.type, e.target.checked)
+
 
     const { name, value, type, checked } = e.target;
-    // console.log(value.length);
-
-    // let btnflag = 
 
     if (name === "gender" && checked) {
       setRadioError("")
@@ -154,71 +120,58 @@ function App() {
       setCountryError("")
     }
     if (name == "checkbox" && checked) {
-      console.log("line 159 enering or bot ")
+
       setCheckBoxError("")
     }
 
-    console.log(radioError , "line numver is 161")
 
-    console.log(checkBoxError, "line number is 162")
 
-   const nextValue =
-    name === "age" ? Number(value) : (type === "checkbox" ? checked : value);
 
-      const nextFormData = { ...formData, [name]: nextValue };
 
-     setFormdata((prevState) => {
-  const updatedState = { ...prevState, ...nextFormData };
-  console.log(updatedState);  // Log the updated state here
-  return updatedState;
-});
+    const nextValue =
+      name === "age" ? Number(value) : (type === "checkbox" ? checked : value);
 
-console.log(nextFormData.name.length, "this is line 176")
-console.log(formData.name.length)
-      console.log(formData , "line number 174 ")
+    const nextFormData = { ...formData, [name]: nextValue };
+
+    setFormdata((prevState) => {
+      const updatedState = { ...prevState, ...nextFormData };
+
+      return updatedState;
+    });
+
+
+
+
 
     validateForm(nextFormData);
   }
 
-  function validateForm(nextFormData :UserFormData) {
-  // Check if any field has an error
-  const isFormValid =
-    // !nameError &&
-    // !mailError &&
-    // !passError &&
-    // !radioError &&
-    // !countryError &&
-    // !checkBoxError &&
-    nextFormData.name.length >= 3 &&
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(nextFormData.email) &&
-    nextFormData.password.length >= 6 &&
-    nextFormData.textarea.split(/\s+/).length >= 5 &&
-    nextFormData.gender &&
-    nextFormData.country &&
-    nextFormData.checkbox;
+  function validateForm(nextFormData: UserFormData) {
 
-    console.log(isFormValid, "888888888888")
+    const isFormValid =
 
-  // Enable or disable submit button based on validation
+      nextFormData.name.length >= MIN_NAME_LENGTH &&
+      isValidEmailAdd(formData.email) &&
+      nextFormData.password.length >= MIN_PASSWORD_LENGTH &&
+      nextFormData.textarea.split(/\s+/).length >= MIN_TEXT_AREA_LENGTH &&
+      nextFormData.gender &&
+      nextFormData.country &&
+      nextFormData.checkbox;
+
+
+
+
     setDisable(!isFormValid);
-}
-
-
-  function wordCount(str: string) {
-    return str.trim().split(/\s+/).filter(Boolean).length;
-
-
   }
+
+
 
   function isValidTextarea(e: React.ChangeEvent<HTMLTextAreaElement>) {
 
     let data = e.target.value;
-    const words = data.trim().split(/\s+/).filter(Boolean).length;
-    // const characters = data.length;
+    const words = wordCount(data);
 
-    console.log(words)
-
-    if (words < 5) {
+    if (words < MIN_TEXT_AREA_LENGTH) {
       setError("Please enter more than 5 words ")
       handleChange(e)
 
@@ -227,27 +180,23 @@ console.log(formData.name.length)
       setError("");
       handleChange(e)
     }
-    // if(characters < 20)
-    //   setError("Please enter more 20 characters ")
 
   }
 
   function isvalidName(value: string) {
-    if (value.length <= 3) {
+    if (value.length <= MIN_NAME_LENGTH) {
       setNameError("name length must be greater than 3")
-      // setDisable(true)
-    
     }
     else {
       setNameError("")
-      // setDisable(false)
+
 
     }
 
   }
 
   function isValidEmail(value: string) {
-    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+    if (isValidEmailAdd(value)) {
       setMailError("");
 
     }
@@ -259,7 +208,7 @@ console.log(formData.name.length)
   }
 
   function isPasswordValid(value: string) {
-    if (value.length > 6) {
+    if (value.length > MIN_PASSWORD_LENGTH) {
       setPassError("")
     }
     else {
@@ -276,7 +225,7 @@ console.log(formData.name.length)
           <label htmlFor="">Full name</label>
           <input type="text" name='name' value={formData.name} onChange={(e) => {
             let value = e.target.value;
-            if (/^[A-Za-z\s]*$/.test(value)) {
+            if (isValidFullName(value)) {
               isvalidName(e.target.value)
               handleChange(e)
             }
