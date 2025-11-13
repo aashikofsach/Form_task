@@ -43,38 +43,25 @@ function App() {
       setPassError("password length is not correct")
       errorFlag = true
     }
-
-
     if (formData.textarea.split(/\s+/).length < MIN_TEXT_AREA_LENGTH) {
 
       setError("Please enter more than 5 words ")
       errorFlag = true
     }
-
     if (formData.gender.length === 0) {
       setRadioError("please select radio button")
       errorFlag = true
 
     }
-
-
     if (formData.country.length == 0) {
       setCountryError("please select the country")
       errorFlag = true
 
     }
-
-
-
     if (formData.checkbox === false) {
       setCheckBoxError("please check all terms and conditions ")
       errorFlag = true
     }
-
-
-
-
-
     if (errorFlag) {
 
       setDisable(true)
@@ -101,11 +88,6 @@ function App() {
       }, 3000)
 
     }
-
-
-
-
-
   }
 
   function handleChange(e: inputEvent) {
@@ -123,13 +105,9 @@ function App() {
 
       setCheckBoxError("")
     }
-
-
-
-
-
     const nextValue =
-      name === "age" ? Number(value) : (type === "checkbox" ? checked : value);
+      name === "age" ? (value) : (type === "checkbox" ? checked : value);
+
 
     const nextFormData = { ...formData, [name]: nextValue };
 
@@ -138,11 +116,6 @@ function App() {
 
       return updatedState;
     });
-
-
-
-
-
     validateForm(nextFormData);
   }
 
