@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useReducer} from 'react'
 
 import type { UserFormData, inputEvent } from './types';
 import { initialUserFormData } from "./constants/formDefaults"
@@ -191,7 +191,8 @@ function App() {
 
 
   return (
-    <div>
+    <>
+     <div>
       <h1> Form Task </h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -275,8 +276,37 @@ function App() {
       </form>
       {submitted && <p>Form Submitted successfully </p>}
     </div>
-
+<Counter/>
+    </>
+   
   )
+}
+
+
+function reducer(state , action)
+{
+  if(action.type==='inc')
+  {
+    return {
+      age : state.age +1 
+    }
+  }
+
+}
+
+
+
+function Counter()
+{
+
+  const [state , dispatch] = useReducer(reducer , {age : 0})
+  return <>
+  
+  <button onClick={()=> dispatch({type : "inc"})}>Increment</button>
+  <p>The age is : {state.age}</p>
+  
+  
+  </>
 }
 
 export default App
