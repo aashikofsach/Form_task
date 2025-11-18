@@ -21,8 +21,6 @@ function App() {
   const [checkBoxError, setCheckBoxError] = useState<string>("");
 
 
-
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 
     let errorFlag = false;
@@ -110,6 +108,7 @@ function App() {
 
 
     const nextFormData = { ...formData, [name]: nextValue };
+    console.log(nextFormData)
 
     setFormdata((prevState) => {
       const updatedState = { ...prevState, ...nextFormData };
