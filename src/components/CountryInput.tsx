@@ -1,29 +1,45 @@
-import { forwardRef, useId, type ComponentPropsWithoutRef, type HTMLAttributes } from "react";
+import { forwardRef, type ComponentPropsWithoutRef, type HTMLAttributes } from "react";
 
 // type CountrySelectProps = Omit<ComponentPropsWithoutRef<"input"> , "type"> & {
 
 // }
 
+type obj = {
+  label : string , 
+  value : string 
+}
 
-interface CountrySelectProps extends HTMLAttributes<HTMLSelectElement> {
+
+// interface CountrySelectProps extends HTMLAttributes<HTMLSelectElement> {
+//   label: string,
+//   error?: string,
+//   options: [obj, obj, obj , obj],
+//   name : string,
+//   value : string
+
+// }
+
+type CountrySelectProps = ComponentPropsWithoutRef<"select"> & {
   label: string,
   error?: string,
-  options: []
-  id?: string
+  options: obj[]
+  name : string,
+  value : string
+
 }
 
 
 
+
+
 const CountryInput = forwardRef<HTMLSelectElement, CountrySelectProps>((props, ref) => {
-  const { label, options, error, id, ...otherProps } = props
+  const { label, options, error, value , name ,...otherProps } = props
 
-  const generatedId = useId();
 
-  const selectId = id ?? generatedId;
 
   return <div>
-    <label htmlFor={selectId}>{label}</label>
-    <select name="" id={selectId} {...otherProps} ref={ref}>
+    <label htmlFor="selectedId">{label}</label>
+    <select name={name} id="selectedId" {...otherProps} ref={ref}>
       {
         options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)
       }

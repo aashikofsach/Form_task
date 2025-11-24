@@ -1,23 +1,26 @@
-import { forwardRef, useId } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { wordCount } from "../utils/stringUtils";
 
 
 
+type AboutInputTypeProps = ComponentPropsWithoutRef<"textarea"> & {
+    label : string,
+    error ? : string
+}
 
 
-const AboutInput = forwardRef(({label , id ,  placeholder, rows , cols , error , value, ...inputProps}, ref)=>
+
+const AboutInput = forwardRef<HTMLTextAreaElement , AboutInputTypeProps >(({label , id ,  placeholder, rows , cols , error , value, name, ...inputProps}, ref)=>
 {
-    const generatedId = useId() ;
-
-    const aboutId = id ?? generatedId ;
+    
 
     return <div>
-        <label htmlFor={aboutId}>{label}</label>
-        <textarea name="" id={aboutId} {...inputProps} placeholder={placeholder} rows={rows} cols={cols} ref={ref}>{value}</textarea>
+        <label htmlFor='about'>{label}</label>
+        <textarea name={name} id="about"  {...inputProps} placeholder={placeholder} rows={rows} cols={cols} ref={ref}>{value}</textarea>
         {
             error && <p>{error}</p>
         }
-        <p>The Word Length is : {wordCount(value)} </p>
+        <p>The Word Length is : {wordCount(value as string)} </p>
     </div>
 }
 );

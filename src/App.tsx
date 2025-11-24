@@ -14,6 +14,7 @@ import AboutInput from './components/AboutInput';
 import CheckedInput from './components/CheckedInput';
 import GenderInput from './components/GenderInput';
 import AgeInput from './components/AgeInput';
+import PasswordInput from './components/PasswordInput';
 
 
 
@@ -32,11 +33,11 @@ function App() {
   const [checkBoxError, setCheckBoxError] = useState<string>("");
 
 
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const textRef = useRef();
-  const passRef = useRef();
-  const AboutRef = useRef() ;
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const textRef = useRef<HTMLInputElement | null>(null);
+  const passRef = useRef<HTMLInputElement | null>(null);
+  const AboutRef = useRef<HTMLTextAreaElement | null>(null);
 
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -216,24 +217,24 @@ function App() {
 
   const optionsData = [
     {
-      label :"--Select a country from below--" , value : "none"
+      label: "--Select a country from below--", value: "none"
     },
     {
-      label : "India" , value : "India"
+      label: "India", value: "India"
     },
     {
-      label : "UK" , value :"UK"
+      label: "UK", value: "UK"
     },
     {
-      label : "USA", value : "UK"
+      label: "USA", value: "USA"
     },
     {
-      label : "Others" , value : "Others"
+      label: "Others", value: "Others"
     }
-   
+
   ]
 
-  const genderOptions = ["male" , "female" , "others"];
+  const genderOptions = ["male", "female", "others"];
 
 
 
@@ -246,7 +247,7 @@ function App() {
             ref={nameRef}
             label="Full name"
             name="name"
-            type="text"
+
             value={formData.name}
             error={nameError}
             onChange={(e) => {
@@ -269,26 +270,32 @@ function App() {
 
           </div> */}
           <EmailInput label="Email Address" ref={emailRef} name='email' value={formData.email} error={mailError} onChange={(e) => {
-              handleChange(e)
-              isValidEmail(e.target.value)
-            }}  />
-          
-          <div ref={passRef}>
+            handleChange(e)
+            isValidEmail(e.target.value)
+          }} />
 
-            <label htmlFor="">Password</label>
+          {/* <div ref={passRef}>
+
+            <label htmlFor="password">Password</label>
             <input type="password" name='password' value={formData.password} onChange={(e) => {
 
               isPasswordValid(e.target.value)
               handleChange(e)
             }} />
             {passError && <p>{passError}</p>}
-          </div>
-          <div>
+          </div> */}
+
+          <PasswordInput ref={passRef} name='password' label="Password" error={passError} onChange={(e) => {
+
+            isPasswordValid(e.target.value)
+            handleChange(e)
+          }} />
+          {/* <div>
 
             <label htmlFor="">Age</label>
             <input type="number" name='age' value={formData.age} onChange={(e) => handleChange(e)} />
 
-          </div>
+          </div> */}
 
           <AgeInput label="Age" />
 
@@ -302,7 +309,7 @@ function App() {
             {radioError && <p>{radioError}</p>}
           </div>
 
-          <GenderInput label="Gender" type="radio" name="gender" onChange={(e) => handleChange(e)} genderOptions={genderOptions}/>
+          <GenderInput label="Gender" type="radio" name="gender" onChange={(e) => handleChange(e)} genderOptions={genderOptions} />
 
           {/* <div>
             <label htmlFor="">Country</label>
@@ -316,12 +323,12 @@ function App() {
             {countryError && <p>{countryError}</p>}
           </div> */}
 
-          
 
-            <CountryInput label="Country" value={formData.country} options={optionsData} error={countryError} onChange={(e) => handleChange(e)} />
-          
-          
-          
+
+          <CountryInput name="country" label="Country" value={formData.country} options={optionsData} error={countryError} onChange={(e) => handleChange(e)} />
+
+
+
           {/* <div ref={textRef}>
             <label htmlFor="">About yourself</label>
             <textarea name="textarea" id="" placeholder='Enter About Yourself here' rows={10} cols={200} value={formData.textarea} onChange={(e) => {
@@ -333,17 +340,17 @@ function App() {
             <p>Word count is : {wordCount(formData.textarea)}</p>
           </div> */}
 
-            <AboutInput label="About Yourself" error={error} placeholder="Enter About Yourself here" rows={10} cols={200} value={formData.textarea} ref={AboutRef} onChange={(e) => {
-              isValidTextarea(e)
-            }}/>
+          <AboutInput name="textarea" label="About Yourself" error={error} placeholder="Enter About Yourself here" rows={10} cols={200} value={formData.textarea} ref={AboutRef} onChange={(e) => {
+            isValidTextarea(e)
+          }} />
 
-          <div>
+          {/* <div>
             <label htmlFor="">Accept Terms and Conditions</label>
-            <input type="checkbox" checked={formData.checkbox} name='checkbox'onChange={(e) => handleChange(e)}  />
+            <input type="checkbox" checked={formData.checkbox} name='checkbox' onChange={(e) => handleChange(e)} />
             {checkBoxError && <p>{checkBoxError}</p>}
-          </div>
+          </div> */}
 
-          <CheckedInput label="Accept Terms and Conditions" checked={formData.checkbox} onChange={(e) => handleChange(e)} error={checkBoxError} />
+          <CheckedInput name='checkbox' label="Accept Terms and Conditions" checked={formData.checkbox} onChange={(e) => handleChange(e)} error={checkBoxError} />
 
           <button type='submit' disabled={disable}>Submit</button>
         </form>

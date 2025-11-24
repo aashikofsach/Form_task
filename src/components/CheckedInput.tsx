@@ -1,22 +1,27 @@
-import { forwardRef, useId } from "react";
+import { forwardRef, type ComponentPropsWithoutRef } from "react";
 
 
-
-const CheckedInput = forwardRef(({label , id , checked, error ,  ...CheckedInput}) =>
+type checkInputProps = Omit<ComponentPropsWithoutRef<"input">, "type"> &
 {
-    const generatedId = useId() ;
+    label: string,
+    error?: string
 
-    const checkId = id ?? generatedId ;
+}
+
+
+const CheckedInput = forwardRef<HTMLInputElement, checkInputProps>(({ label, checked, error, ...CheckedInput }, ref) => {
+
+
 
 
     return <div>
-        <label htmlFor={checkId}>{label}</label>
-        <input type="checkbox" checked={checked} {...CheckedInput} id={checkId} />
+        <label htmlFor="checkbox">{label}</label>
+        <input type="checkbox" id="checkbox" checked={checked} {...CheckedInput} ref={ref} />
         {
             error && <p>{error}</p>
         }
     </div>
 })
-CheckedInput.displayName = "CheckedInput" ;
+CheckedInput.displayName = "CheckedInput";
 
-export default CheckedInput ;
+export default CheckedInput;

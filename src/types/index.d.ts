@@ -6,7 +6,7 @@ export interface UserFormData {
   age?:  string;
   gender: string;
   country: string;
-  textarea: string;
+  textarea: string ;
   checkbox: boolean;
 }
 
