@@ -23,9 +23,6 @@ type CountrySelectProps = ComponentPropsWithoutRef<"select"> & {
   label: string,
   error?: string,
   options: obj[]
-  name : string,
-  value : string
-
 }
 
 
@@ -33,13 +30,13 @@ type CountrySelectProps = ComponentPropsWithoutRef<"select"> & {
 
 
 const CountryInput = forwardRef<HTMLSelectElement, CountrySelectProps>((props, ref) => {
-  const { label, options, error, value , name ,...otherProps } = props
+  const { label, options, error,...otherProps } = props
 
 
 
   return <div>
     <label htmlFor="selectedId">{label}</label>
-    <select name={name} id="selectedId" {...otherProps} ref={ref}>
+    <select id="selectedId" {...otherProps} ref={ref}>
       {
         options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)
       }

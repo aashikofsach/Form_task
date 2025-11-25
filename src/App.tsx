@@ -35,9 +35,13 @@ function App() {
 
   const nameRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
-  const textRef = useRef<HTMLInputElement | null>(null);
+  const ageRef = useRef<HTMLInputElement | null>(null);
   const passRef = useRef<HTMLInputElement | null>(null);
   const AboutRef = useRef<HTMLTextAreaElement | null>(null);
+  const Inputref = useRef<HTMLInputElement | null>(null);
+  const countryRef = useRef<HTMLSelectElement |null >(null)
+  const checkboxRef = useRef<HTMLInputElement | null>(null);
+
 
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -117,6 +121,7 @@ function App() {
     setDisable(false)
 
     const { name, value, type, checked } = e.target;
+    console.log(checked)
 
     if (name === "gender" && checked) {
       setRadioError("")
@@ -234,7 +239,7 @@ function App() {
 
   ]
 
-  const genderOptions = ["male", "female", "others"];
+  const genderOptions = [{ label: "Male", value: "male" }, { label: "Female", value: "female", }, { label: "Others", value: "others" }]
 
 
 
@@ -297,9 +302,9 @@ function App() {
 
           </div> */}
 
-          <AgeInput label="Age" />
+          <AgeInput label="Age" ref={ageRef} />
 
-          <div>
+          {/* <div>
             <label htmlFor="">Gender</label>
             <label htmlFor="">
               <label>  <input type="radio" name='gender' value="male" checked={formData.gender == "male"} onChange={(e) => handleChange(e)} /> Male</label>
@@ -307,9 +312,9 @@ function App() {
               <label> <input type="radio" name='gender' value='other' checked={formData.gender == "other"} onChange={(e) => handleChange(e)} /> Other</label>
             </label>
             {radioError && <p>{radioError}</p>}
-          </div>
+          </div> */}
 
-          <GenderInput label="Gender" type="radio" name="gender" onChange={(e) => handleChange(e)} genderOptions={genderOptions} />
+          <GenderInput label="Gender" name="gender" value={formData.gender} onChange={(e) => handleChange(e)} genderOptions={genderOptions} error={radioError} ref={Inputref}/>
 
           {/* <div>
             <label htmlFor="">Country</label>
@@ -325,7 +330,7 @@ function App() {
 
 
 
-          <CountryInput name="country" label="Country" value={formData.country} options={optionsData} error={countryError} onChange={(e) => handleChange(e)} />
+          <CountryInput name="country" label="Country" value={formData.country} options={optionsData} error={countryError} onChange={(e) => handleChange(e)} ref={countryRef}/>
 
 
 
@@ -350,7 +355,7 @@ function App() {
             {checkBoxError && <p>{checkBoxError}</p>}
           </div> */}
 
-          <CheckedInput name='checkbox' label="Accept Terms and Conditions" checked={formData.checkbox} onChange={(e) => handleChange(e)} error={checkBoxError} />
+          <CheckedInput name='checkbox' label="Accept Terms and Conditions" checked={formData.checkbox} onChange={(e) => handleChange(e)} error={checkBoxError} ref={checkboxRef} />
 
           <button type='submit' disabled={disable}>Submit</button>
         </form>

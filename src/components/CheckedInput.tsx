@@ -9,14 +9,14 @@ type checkInputProps = Omit<ComponentPropsWithoutRef<"input">, "type"> &
 }
 
 
-const CheckedInput = forwardRef<HTMLInputElement, checkInputProps>(({ label, checked, error, ...CheckedInput }, ref) => {
+const CheckedInput = forwardRef<HTMLInputElement, checkInputProps>(({ label,  error, ...CheckedInput }, ref) => {
 
 
 
 
     return <div>
         <label htmlFor="checkbox">{label}</label>
-        <input type="checkbox" id="checkbox" checked={checked} {...CheckedInput} ref={ref} />
+        <input type="checkbox" id="checkbox"  {...CheckedInput} ref={ref} />
         {
             error && <p>{error}</p>
         }
